@@ -1,0 +1,41 @@
+<admintpl file="header"/>
+  <link rel="stylesheet" href="__PLUGINTMPL__style.css" />
+<body>
+<div class="wrap js-check-wrap">
+  <ul class="nav nav-tabs">
+     <li class="active"><a>相册管理</a></li>
+  </ul>
+  <div class="common-form">
+     <div class="well">
+<!--         <a href="#" class="btn btn-info  right"><i class=" icon-picture text-info"></i>上传照片</a>-->
+         <a href="javascript:album_add('创建相册','{:sp_plugin_url('Album://AdminIndex/add',array(),true)}');" class="btn btn-default">创建相册</a>
+    </div>
+    <form method="post" class="js-ajax-form" action="#">
+      <div class="table_list">
+          <volist name="albums" id="vo">
+              <div class=" bk3 album">
+                  <div class="cover">
+                      <div class="action">
+                          <a href="{:sp_plugin_url('Album://AdminIndex/delete',array('id'=>$vo['id']),true)}"  data-msg="确定要删除该相册吗?" title="" class="js-ajax-delete "><i class="icon-remove"></i></a>
+                          <a href="javascript:album_add('编辑相册-【{$vo.title}】','{:sp_plugin_url('Album://AdminIndex/add',array('id'=>$vo['id']),true)}');"  title="编辑" class=""><i class="icon-edit"></i></a>
+                      </div>
+                      <a href="{:sp_plugin_url('Album://AdminIndex/photos',array('id'=>$vo['id']))}">
+                     <img src="{$vo.cover|sp_get_asset_upload_path}" >
+                      </a>
+                      <span class="photos-num"> {$vo.photos_count|default=0}</span>
+                  </div>
+                  <div class="title">
+                      <a href="{:sp_plugin_url('Album://AdminIndex/photos',array('id'=>$vo['id']))}" class=" left">{$vo.title}</a>
+                    <a href="" class="right icon-upload"></a>
+                  </div>
+              </div>
+            
+          </volist>
+        </div>
+    </form>
+  </div>
+</div>
+<script src="__PUBLIC__/js/common.js?"></script>
+<script type="text/javascript" src="__PLUGINTMPL__js/admin.js"></script>
+</body>
+</html>

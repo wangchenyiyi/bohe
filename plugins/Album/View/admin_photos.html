@@ -1,0 +1,74 @@
+<admintpl file="header"/>
+  <link rel="stylesheet" href="__PLUGINTMPL__style.css" />
+<body>
+<div class="wrap js-check-wrap">
+  <ul class="nav nav-tabs">
+     <li class=""><a href="{:sp_plugin_url('Album://AdminIndex/index')}">相册管理</a></li>
+      <li class="active"><a>照片管理</a></li>
+  </ul>
+  <div class="common-form">
+     <div class="well">
+         当前相册：{$album.title|default="默认相册"}
+         <a href="JavaScript:;" onclick="javascript:flashupload('albums_images', '图片上传','photos',change_images,'10,gif|jpg|jpeg|png|bmp,0','','','')" class="btn btn-info right"><i class=" icon-picture text-info"></i>上传照片</a>
+   <div class="btn-group right mr-10"> <button type="button" class="btn btn-success dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+   批量操作 <span class="caret"></span>
+    </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">批量删除</a></li>
+          <li><a href="#">批量移动至相册</a></li>
+         
+          <li role="separator" class="divider"></li>
+        </ul>
+   </div>
+     </div>
+          <form action="{:sp_plugin_url('Album://AdminIndex/doPost')}" method="post" class=" js-ajax-form"  id="photos-list">
+          <ul id="photos" class=""></ul>
+          <div class="clear" style="height: 30px;">
+              <input type="hidden" name="album_id" value="{$album.id}" />
+                <button  type="submit" class="btn  btn-warning right js-ajax-submit" data-wait="1500" >保存上传的图片</button>
+                <button  type="button" class="btn  btn-danger right mr-10 btn-cancel" >取消上传的图片</button>
+          </div>
+          </form>
+      </div>
+    <form method="post" class="js-ajax-form" action="#">
+      <div class="table_list">
+          <volist name="list" id="vo">
+              <div class=" bk3 album">
+                  <div class="cover" ondblclick="image_priview('__UPLOAD__{$vo.url}');">
+                      <div class="action">
+                          <a href="{:sp_plugin_url('Album://AdminIndex/settocover',array('id'=>$vo['album_id'],'url'=>$vo['url']))}" data-msg="确定要将该照片设为封面吗？" title="设为封面" class="js-ajax-dialog-btn right icon-bookmark"></a>
+                            <a href="{:sp_plugin_url('Album://AdminIndex/photos_remove',array('id'=>$vo['id']))}" data-msg="确定删除该照片吗？" title="删除" class="js-ajax-delete right icon icon-remove"></a>
+                            <a href="javascript:photo_edit('{:sp_plugin_url('Album://AdminIndex/photos_edit',array('id'=>$vo['id']),true)}');"  title="编辑" class="right icon icon-edit mr-10"></a>
+                      </div>
+                      <img src="__UPLOAD__{$vo.url}" >
+                  </div>
+                  <div class="title">
+                      <span class="text" style="width:170px;" title="{$vo.title}">{$vo.title|msubstr=0,12}</span>
+                      <input class="input-sm hide" name="photo[$vo.id]" value="{$vo.title}" style="width:170px;" />
+                  </div>
+              </div>            
+          </volist>
+          
+        </div>
+        <div class="clearfix pager">
+            {$page}
+        </div>
+    </form>
+  </div>
+</div>
+<script src="__PUBLIC__/js/common.js?"></script>
+<script type="text/javascript" src="__PLUGINTMPL__js/admin.js"></script>
+<script>
+    $(function(){
+        $(".btn-cancel").bind("click",function(){
+            $("#photos-list").slideUp().removeClass("show")
+        });
+        $(".album").on("click",function(){
+            $(this).toggleClass("selected");
+        })
+        
+    })
+    
+</script>
+</body>
+</html>

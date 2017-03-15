@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{$name} {$seo_title} {$site_name}</title>
+        <meta name="keywords" content="{$seo_keywords}" />
+        <meta name="description" content="{$seo_description}">
+        <!-- STYLESHEET CSS FILES -->
+        <link rel="stylesheet" href="__PUBLIC__/tpmo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="__PUBLIC__/tpmo/css/animate.min.css">
+        <link rel="stylesheet" href="__PUBLIC__/tpmo/css/nivo-lightbox.css">
+        <link rel="stylesheet" href="__PUBLIC__/tpmo/css/nivo_themes/default/default.css">
+        <link rel="stylesheet" href="__PUBLIC__/tpmo/css/templatemo-style.css">
+        <style>
+            .container-fluid {
+                margin-left: auto;
+                margin-right: auto;
+                width:1240px;;
+            }
+              .box{ width:300px;}
+            .box .bk-grey{
+                float: left; 
+                padding: 5px;
+                border: 1px solid #ccc; 
+             margin: 5px; 
+            }
+            .box .bk-grey img {
+                max-width: 100%
+            }
+        </style>
+    </head>
+    <body>
+        {:hook('body_start')}
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> </button>
+                    </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav" id="main-menu">
+                        <php>
+                            $album_list=D("Album")->order("id asc")->select();
+                        </php>
+                        <volist name="album_list" id="vo">
+                            <li id="menu-item-1" class="{$vo[id]==intval($_GET['id'])?'active':'' }"><a class="smoothScroll" target="" href="{:sp_plugin_url('Album://Index/index',array('id'=>$vo['id']))}">{$vo.title}</a></li>
+                        </volist>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="masonry" class="container-fluid">
+            <volist name="list" id="vo">
+                <div class="box wow fadeIn " data-wow-delay="0.6s">
+                    <div class="bk-grey">
+                    <img src="{:sp_get_asset_upload_path($vo['url'])}"  alt="{$vo.title}">
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div class="pager">{$page}</div>
+        <!-- JAVASCRIPT JS FILES --> 
+        <script src="__PUBLIC__/tpmo/js/jquery.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/bootstrap.min.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/nivo-lightbox.min.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/smoothscroll.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/jquery.sticky.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/jquery.parallax.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/wow.min.js"></script> 
+        <script src="__PUBLIC__/tpmo/js/custom.js"></script>
+        <script src="__PUBLIC__/js/imagesloaded.pkgd.min.js"></script>
+        <script src="__PUBLIC__/js/masonry.pkgd.min.js"></script>
+        <script>
+            $(function () {
+                var $container = $('#masonry');
+                $container.imagesLoaded(function () {
+                    $container.masonry({
+                        itemSelector: '.box',
+                        gutterWidth: 20,
+                        isAnimated: true,
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
